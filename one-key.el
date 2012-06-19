@@ -10,7 +10,7 @@
 ;; Copyright (C) 2009, rubikitch, all rights reserved.
 ;; Created: 2008-12-22 21:54:30
 ;; Version: 0.7.1
-;; Last-Updated: Sun Jun 24 15:08:41 2012 (+0800)
+;; Last-Updated: Sun Jun 24 16:34:55 2012 (+0800)
 ;;           By: Le Wang
 ;; URL: http://www.emacswiki.org/emacs/download/one-key.el
 ;; Keywords: one-key
@@ -699,7 +699,11 @@ Will highlight this `MSG' with face `MSG-FACE'."
 
 (defun one-key-highlight-help (title keystroke)
   "Highlight TITLE help information with KEYSTROKE."
-  (setq title (one-key-highlight (format "Here is a list of <%s> keystrokes. Type '%s' to hide, '%s/%s' and '%s/%s' to scroll.\n               Type '%s' for help about next keystroke, and type '%s' to edit this menu\n" title one-key-key-hide one-key-key-up one-key-key-down one-key-key-pgup one-key-key-pgdown one-key-key-help one-key-key-edit)
+  (setq title (one-key-highlight (format "<%s> '%s' to hide, '%s/%s' and '%s/%s' to scroll. \
+'%s' for keystroke help. '%s' to edit this menu.\n"
+                                         title one-key-key-hide one-key-key-up
+                                         one-key-key-down one-key-key-pgup one-key-key-pgdown
+                                         one-key-key-help one-key-key-edit)
                                  "\\(<[^<>]*>\\|'[^']*'\\)"
                                  '(face one-key-title)))
   (setq keystroke (one-key-highlight keystroke
@@ -1058,23 +1062,25 @@ TITLE is title name that any string you like."
               (format "(setq one-key-menu-%s-alist\n'(\n" funcname))
       ;; Insert (("key" . "desc") . command).
       (while (not (eobp))
-        (let ((pair (split-string (buffer-substring (point-at-bol) (point-at-eol)) "\t+")))
-          (if (and (eq 2 (length pair)) (not (equal "" (car pair))))
-              (destructuring-bind (key cmd)
-                  (split-string (buffer-substring (point-at-bol) (point-at-eol)) "\t+")
-                (delete-region (point-at-bol) (point-at-eol))
-                (let ((keystr (replace-regexp-in-string
-                               "\\\"" "\\\\\""
-                               (replace-regexp-in-string "\\\\" "\\\\\\\\" key))))
-                  (insert (format "((\"%s\" . \"%s (%s)\") . %s)" 
-                                  keystr
-                                  (capitalize (replace-regexp-in-string "-" " " cmd))
-                                  keystr
-                                  cmd)))
-                (when (and cmd
-                           (string-match " " (concat key cmd)))
-                  (forward-sexp -1)
-                  (insert ";; ")))))
+        (let* ((pair (split-string (buffer-substring (point-at-bol) (point-at-eol)) "\t+"))
+               (key (car pair))
+               (cmd (cadr pair)))
+          (when (and key
+                     cmd
+                     (length key))
+            (progn
+              (delete-region (point-at-bol) (point-at-eol))
+              (let ((keystr (replace-regexp-in-string
+                             "\\\"" "\\\\\""
+                             (replace-regexp-in-string "\\\\" "\\\\\\\\" key))))
+                (insert (format "((\"%s\" . \"%s (%s)\") . %s)"
+                                keystr
+                                (capitalize (replace-regexp-in-string "-" " " cmd))
+                                keystr
+                                cmd)))))
+          (when (string-match " " (concat key cmd))
+            (back-to-indentation)
+            (insert ";; ")))
         (forward-line 1))
       (goto-char (point-max))
       (insert "))\n\n")
