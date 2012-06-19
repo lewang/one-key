@@ -10,8 +10,8 @@
 ;; Copyright (C) 2009, rubikitch, all rights reserved.
 ;; Created: 2008-12-22 21:54:30
 ;; Version: 0.7.1
-;; Last-Updated: 7/12/2010 20:22:00
-;;           By: Joe Bloggs
+;; Last-Updated: Sun Jun 24 14:58:10 2012 (+0800)
+;;           By: Le Wang
 ;; URL: http://www.emacswiki.org/emacs/download/one-key.el
 ;; Keywords: one-key
 ;; Compatibility: GNU Emacs 22 ~ 23
@@ -962,8 +962,11 @@ last command when it miss matches in key alist."
 			(one-key-help-window-close)
 			;; Set `one-key-menu-call-first-time' with "t" for recursion execute.
 			(setq one-key-menu-call-first-time t)
-			;; Execute.
-			(call-interactively command)
+                        ;; allow command to modify this info
+                        (setq deactivate-mark nil
+                              this-command command)
+                        ;; Execute.
+                        (call-interactively command)
 			;; Set `one-key-menu-call-first-time' with "nil".
 			(setq one-key-menu-call-first-time nil)
 			(throw 'match t))))
