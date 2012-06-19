@@ -10,7 +10,7 @@
 ;; Copyright (C) 2009, rubikitch, all rights reserved.
 ;; Created: 2008-12-22 21:54:30
 ;; Version: 0.7.1
-;; Last-Updated: Sun Jun 24 14:58:10 2012 (+0800)
+;; Last-Updated: Sun Jun 24 15:05:52 2012 (+0800)
 ;;           By: Le Wang
 ;; URL: http://www.emacswiki.org/emacs/download/one-key.el
 ;; Keywords: one-key
@@ -95,8 +95,8 @@
 ;; Now when you type the key, a one-key menu will popup at the bottom of the window.
 ;; Then you just type a keystroke listed in the menu to execute the corresponding command.
 ;;
-;; You can also associate menus with major-modes using the customizable `one-key-mode-alist' variable, 
-;; and the `one-key-get-menu' command. When this command is run it will open the menu associated with the 
+;; You can also associate menus with major-modes using the customizable `one-key-mode-alist' variable,
+;; and the `one-key-get-menu' command. When this command is run it will open the menu associated with the
 ;; current major-mode, or the toplevel menu if there is no associated menu.
 ;; You can bind this to a global key, e.g:
 ;;
@@ -221,7 +221,7 @@
 ;; Put one-key.el in a directory in your load-path, e.g. ~/.emacs.d/
 ;; You can add a directory to your load-path with the following line in ~/.emacs
 ;; (add-to-list 'load-path (expand-file-name "~/elisp"))
-;; where ~/elisp is the directory you want to add 
+;; where ~/elisp is the directory you want to add
 ;; (you don't need to do this for ~/.emacs.d - it's added by default).
 ;;
 ;; Add the following to your ~/.emacs startup file.
@@ -238,187 +238,12 @@
 ;; (setq max-specpdl-size 10000)
 ;;
 
-;;; Customize:
-;;
-;; `one-key-buffer-name' : the buffer name of the popup menu.
-;; `one-key-help-window-max-height' : the maximal height use in popup window.
-;; `one-key-items-per-line' : number of items in one line, if this option is `nil', will be calculated by `window-width'.
-;; `one-key-keystroke-face' : face for highlighting keystroke
-;; `one-key-auto-load-menus' : if t then automatically load one-key menus from `one-key-menus-location'
-;; `one-key-menus-location' : location in which one-key menus will be stored
-;; `one-key-menus-regexp' : regexp to match filenames of one-key menus
-;; `one-key-mode-alist' : An alist of major-mode, one-key menu pairs to set the default menu for each major-mode.
-;; `one-key-toplevel-alist' : A list of key items for the toplevel menu.
-;; `one-key-popup-window' : whether to popup window when first time run, default is `t'.
-;; `one-key-prompt-face' : face for highlighting prompt
-;; `one-key-template-buffer-name' : the buffer name of the template code.
-;; `one-key-title-face' : face for highlighting title
-;; `one-key-key-hide'   :  key to hide the menu, default is "?"
-;; `one-key-key-quit'   :  key to quit the menu, default is "q"
-;; `one-key-key-up'     :  key to scroll the menu down one line, default is "<up>"
-;; `one-key-key-down'   :  key to scroll the menu up one line, default is "<down>"
-;; `one-key-key-pgup'   :  key to scroll the menu down one page, default is "<prior>"
-;; `one-key-key-pgdown' :  key to scroll the menu up one page, default is "<next>"
-;; `one-key-key-help'   :  when this key is pressed, the next keypress will show help for the corresponding command,
-;;                         default is "C-?"
-;; `one-key-key-edit'   :  key to edit the menu (if the source file can be found), default is "C-/"
-
-;; All above options can by customized through:
-;;      M-x customize-group RET one-key RET
-;;
-
-;;; Change log:
-;; 2010/12/07
-;;    * Joe Bloggs
-;;       * Added key-binding ("C-/" by default) to jump to source file of current one-key menu for editing.
-;;       * Made fixed menu keys configurable with variables `one-key-key-hide' `one-key-key-quit' `one-key-key-up'
-;;         `one-key-key-down' `one-key-key-pgup' `one-key-key-pgdown' `one-key-key-help' `one-key-key-edit'
-;;         (they are called one-key-key-??? instead of one-key-???-key so that they will group together in the
-;;          customization buffer).
-;;       * Deleted `one-key-highlight-prompt' function since this is not used anywhere.
-;;       * Added new variable `one-key-column-major-order', and altered `one-key-help-format' function so that
-;;         now you can choose whether items should be listed column first or row first.
-;;
-;; 2010/11/27
-;;    * Joe Bloggs
-;;       * Quick fix to one-key-template-write so that it remains in one-key-template-mode after writing
-;;       
-;; 2010/11/23
-;;    * Joe Bloggs
-;;       * Added `one-key-template-group-key-items-by-regexps', `one-key-template-describe-command',
-;;         and associated keybindings and menu items.
-;;
-;; 2010/11/20
-;;    * Joe Bloggs
-;;       * Added `one-key-template-write' function for saving *One-Key-Template* buffer in `one-key-menus-location',
-;;         and added keybinding `one-key-template-mode' and item to `one-key-menu-one-key-template-alist'.
-;;       
-;; 2010/11/18
-;;    * Joe Bloggs
-;;       * Added new major mode for editing one-key-menus in *One-Key-Template* buffer
-;;       * Added following functions to aid editing menus in *One-Key-Template* buffer:
-;;          `one-key-template-mode', `one-key-template-move-line-region', `one-key-template-move-line-region-up'
-;;          `one-key-template-move-line-region-down', `one-key-template-test-menu', `one-key-template-mark-key-items'
-;;          `one-key-template-sort-key-items-by-command-alphabetically',
-;;          `one-key-template-sort-key-items-by-description-alphabetically',
-;;          `one-key-template-sort-key-items-by-key-alphabetically',
-;;          `one-key-menu-one-key-template', `one-key-menu-one-key'
-;;       * Added keybindings for `one-key-template-mode'.
-;;       * Altered `one-key-help-format' function so that the keys are ordered by column instead of by row.
-;;       * Added `one-key-toplevel-alist' customizable variable and `one-key-menu-toplevel' function.
-;;       * Added `one-key-mode-alist' customizable variable and `one-key-get-menu' function.
-;;       * Alterend `one-key-insert-template' and `one-key-show-template' functions so that they also add
-;;         optional (commented) code to add items to `one-key-mode-alist' and `one-key-toplevel-alist'
-;;       * Added customization variables `one-key-menus-location', `one-key-menus-regexp' and
-;;         `one-key-auto-load-menus', and function `one-key-load-files'.
-;;         Added code to automatically load menus if `one-key-auto-load-menus' is set to t.
-;;       * Fixed spelling mistakes in documentation and added documentation for new features.
-;;
-;; 2010/09/27
-;;    * Joe Bloggs
-;;       * Altered one-key-make-template so that it adds the original keys to the descriptions of each item.
-;;       
-;; 2010/09/21
-;;    * Joe Bloggs
-;;       * Fixed a problems with one-key-make-template so it should work with more keymaps
-;;       * Added ability to get help on one-key-menu items by pressing C-? followed by item key
-;;       * Altered header text of menu
-;;       * Fixed bug in one-key-menu so that window pops up if one-key-popup-window is t
-;;         (this was also fixed independently by Andy, but I'm keeping my fix since it works fine)
-;;
-;; 2009/03/09
-;;   * Andy Stewart:
-;;      * Add `char-valid-p' for compatibility Emacs 22.
-;;
-;; 2009/02/25
-;;   * Andy Stewart:
-;;      * Fix a bug of `one-key-menu'.
-;;
-;; 2009/02/19
-;;   * Andy Stewart:
-;;      * Just show help message when first call function `one-key-menu',
-;;        don't overwritten message from command.
-;;      * Remove function `one-key-menu-quit' and
-;;        option `one-key-show-quit-message', unnecessary now.
-;;
-;; 2009/02/10
-;;   * rubikitch
-;;      * Fix bug.
-;;      * PageUp and PageDown are scroll page keys now.
-;;      * Add new option `one-key-show-quit-message'.
-;;
-;; 2009/01/28
-;;   * Andy Stewart:
-;;      * Capitalize describe in variable `one-key-menu-*-alist'.
-;;
-;; 2009/01/27
-;;   * rubikitch
-;;      * Fix doc.
-;;
-;; 2009/01/26
-;;   * rubikitch
-;;      * Improve code.
-;;
-;; 2009/01/25
-;;   * Andy Stewart:
-;;      * Applied rubikitch's patch for generate
-;;        template code automatically, very nice!
-;;
-;; 2009/01/22
-;;   * rubikitch:
-;;      * Add new option `one-key-items-per-line'.
-;;      * Refactory code make it more clear.
-;;      * Fix bug.
-;;   * Andy Stewart:
-;;      * Applied rubikitch's patch. Thanks!
-;;      * Modified code make build-in keystroke
-;;        can be overridden.
-;;      * Fix doc.
-;;
-;; 2009/01/20
-;;   * Andy Stewart:
-;;      * Add new option `execute-last-command-when-miss-match'
-;;        to function `one-key-menu', make user can execute
-;;        last input command when miss match key alist.
-;;
-;; 2009/01/15
-;;   * rubikitch:
-;;      * Fix bug of `one-key-menu'.
-;;      * Add recursion execute support for `one-key-menu'.*
-;;        Thanks rubikitch patched for this! ;)
-;;
-;; 2009/01/04
-;;   * Andy Stewart:
-;;      * Add `alternate-function' argument with function `one-key-menu'.
-;;
-;; 2008/12/22
-;;   * Andy Stewart:
-;;      * First released.
-;;
-
 ;;; Acknowledgements:
 ;;
 ;;      rubikitch <rubikitch@ruby-lang.org>
 ;;              For send many patches.
 ;;
 
-;;; TODO
-;;
-;; Add configurable colourization of menu items.
-;; Could have alist of alists, called e.g. `one-key-colours-regexp-alist',
-;; the keys to the list would be symbols for the one-key menu alists (e.g. 'one-key-menu-bookmark-alist)
-;; and each value would be an alist of regexp/colour pairs.
-;; Then when a menu is formatted, any items matching a regexp in the associated colours-regexp alist
-;; would be coloured with the associated colour. E.g. could make items that are themselves one-key menus
-;; all the same colour, and other items a different colour.
-;;
-;; Option to automatically split menu when creating templates based on prefix keys.
-;;
-;; Function to split items matching regexp into seperate menu in when editing menu in `one-key-template-mode'.
-;;
-;; Automatically generate one-key menus for common keybindings and store them in memory. This is already implemented
-;; to a certain extent but I think it could be improved. Needs further investigation.
-;;
 ;;; Require
 (eval-when-compile (require 'cl))
 
