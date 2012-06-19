@@ -10,7 +10,7 @@
 ;; Copyright (C) 2009, rubikitch, all rights reserved.
 ;; Created: 2008-12-22 21:54:30
 ;; Version: 0.7.1
-;; Last-Updated: Sun Jun 24 16:34:55 2012 (+0800)
+;; Last-Updated: Sun Jun 24 16:36:28 2012 (+0800)
 ;;           By: Le Wang
 ;; URL: http://www.emacswiki.org/emacs/download/one-key.el
 ;; Keywords: one-key
@@ -1073,10 +1073,9 @@ TITLE is title name that any string you like."
               (let ((keystr (replace-regexp-in-string
                              "\\\"" "\\\\\""
                              (replace-regexp-in-string "\\\\" "\\\\\\\\" key))))
-                (insert (format "((\"%s\" . \"%s (%s)\") . %s)"
+                (insert (format "((\"%s\" . \"%s\") . %s)"
                                 keystr
                                 (capitalize (replace-regexp-in-string "-" " " cmd))
-                                keystr
                                 cmd)))))
           (when (string-match " " (concat key cmd))
             (back-to-indentation)
