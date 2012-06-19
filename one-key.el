@@ -10,7 +10,7 @@
 ;; Copyright (C) 2009, rubikitch, all rights reserved.
 ;; Created: 2008-12-22 21:54:30
 ;; Version: 0.7.1
-;; Last-Updated: Sun Jun 24 15:05:52 2012 (+0800)
+;; Last-Updated: Sun Jun 24 15:08:41 2012 (+0800)
 ;;           By: Le Wang
 ;; URL: http://www.emacswiki.org/emacs/download/one-key.el
 ;; Keywords: one-key
@@ -201,7 +201,6 @@
 ;;
 ;; Some keys are available for all menus and are always the same, they can be configured with the following variables:
 ;;  `one-key-key-hide'   :  key to hide the menu, default is "?"
-;;  `one-key-key-quit'   :  key to quit the menu, default is "q"
 ;;  `one-key-key-up'     :  key to scroll the menu down one line, default is "<up>"
 ;;  `one-key-key-down'   :  key to scroll the menu up one line, default is "<down>"
 ;;  `one-key-key-pgup'   :  key to scroll the menu down one page, default is "<prior>"
@@ -318,13 +317,6 @@ Contains list of key items for toplevel one-key menu.
 Each item contains a key, description and command, in that order.
 The key should be entered in the same format as that returned by `describe-key'."
   :type '(alist :key-type (cons string string) :value-type function)
-  :group 'one-key)
-
-(defcustom one-key-key-quit "q"
-  "String representing the quit key for one-key menus. This key is available in all one-key menus, and when
-pressed will quit the menu.
-The string should be the same as the string displayed by the `describe-key' function after pressing the key."
-  :type 'string
   :group 'one-key)
 
 (defcustom one-key-key-hide "?"
@@ -707,7 +699,7 @@ Will highlight this `MSG' with face `MSG-FACE'."
 
 (defun one-key-highlight-help (title keystroke)
   "Highlight TITLE help information with KEYSTROKE."
-  (setq title (one-key-highlight (format "Here is a list of <%s> keystrokes. Type '%s' to hide, '%s' to exit, '%s/%s' and '%s/%s' to scroll.\n               Type '%s' for help about next keystroke, and type '%s' to edit this menu\n" title one-key-key-hide one-key-key-quit one-key-key-up one-key-key-down one-key-key-pgup one-key-key-pgdown one-key-key-help one-key-key-edit)
+  (setq title (one-key-highlight (format "Here is a list of <%s> keystrokes. Type '%s' to hide, '%s/%s' and '%s/%s' to scroll.\n               Type '%s' for help about next keystroke, and type '%s' to edit this menu\n" title one-key-key-hide one-key-key-up one-key-key-down one-key-key-pgup one-key-key-pgdown one-key-key-help one-key-key-edit)
                                  "\\(<[^<>]*>\\|'[^']*'\\)"
                                  '(face one-key-title)))
   (setq keystroke (one-key-highlight keystroke
@@ -799,9 +791,6 @@ last command when it miss matches in key alist."
             ;; Handle last.
             (one-key-handle-last alternate-function self recursion-p))
            ;; Match build-in keystroke.
-           ((one-key-match-keystroke key one-key-key-quit)
-            ;; quit
-            (keyboard-quit))
            ((one-key-match-keystroke key one-key-key-hide)
             ;; toggle help window
             (one-key-help-window-toggle title info-alist)
