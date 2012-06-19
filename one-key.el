@@ -380,11 +380,6 @@ The string should be the same as the string displayed by the `describe-key' func
   "Face for highlighting keystroke."
   :group 'one-key)
 
-(defface one-key-prompt
-  '((t (:foreground "khaki3")))
-  "Face for highlighting prompt."
-  :group 'one-key)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Variables ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defvar one-key-help-window-configuration nil
   "The window configuration that records the current window configuration before the popup help window.")
