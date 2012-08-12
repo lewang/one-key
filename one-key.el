@@ -10,7 +10,7 @@
 ;; Copyright (C) 2009, rubikitch, all rights reserved.
 ;; Created: 2008-12-22 21:54:30
 ;; Version: 0.7.1
-;; Last-Updated: Sun Jun 24 16:36:28 2012 (+0800)
+;; Last-Updated: Sun Aug 12 16:25:17 2012 (+0800)
 ;;           By: Le Wang
 ;; URL: http://www.emacswiki.org/emacs/download/one-key.el
 ;; Keywords: one-key
@@ -371,12 +371,12 @@ The string should be the same as the string displayed by the `describe-key' func
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Faces ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defface one-key-title
-  '((t (:foreground "Gold")))
+  '((t (:foreground "DarkOrange")))
   "Face for highlighting title."
   :group 'one-key)
 
 (defface one-key-keystroke
-  '((t (:foreground "DarkRed")))
+  '((t (:foreground "White" :background "DarkOrange")))
   "Face for highlighting keystroke."
   :group 'one-key)
 
@@ -552,10 +552,10 @@ where ?? is the name of the menu."
 
 (setq one-key-menu-one-key-alist
       '(
-	(("t" . "show template") . one-key-show-template)
-	(("T" . "insert template") . one-key-insert-template)
-	(("C-b" . "Back to toplevel menu") . one-key-menu-toplevel)
-	))
+        (("t" . "show template") . one-key-show-template)
+        (("T" . "insert template") . one-key-insert-template)
+        (("C-b" . "Back to toplevel menu") . one-key-menu-toplevel)
+        ))
 
 (defun one-key-menu-one-key ()
   "The `one-key' menu for one-key"
@@ -567,19 +567,19 @@ where ?? is the name of the menu."
 
 (setq one-key-menu-one-key-template-alist
       '(
-	(("C-s" . "Sort commands (C-c C-s)") . one-key-menu-one-key-template-sort)
-	(("C-c c" . "Comment Region (C-c c)") . comment-region)
-	(("C-c u" . "Uncomment Region (C-c u)") . uncomment-region)
-	(("SPC" . "Mark key items (C-c C-SPC)") . one-key-template-mark-key-items)
-	(("M-<up>" . "Move key item(s) up (M-<up>)") . one-key-template-move-line-region-up)
-	(("M-<down>" . "Move key item(s) down (M-<down>)") . one-key-template-move-line-region-down)
-	(("C-M-q" . "Indent sexp (C-M-q)") . indent-sexp)
+        (("C-s" . "Sort commands (C-c C-s)") . one-key-menu-one-key-template-sort)
+        (("C-c c" . "Comment Region (C-c c)") . comment-region)
+        (("C-c u" . "Uncomment Region (C-c u)") . uncomment-region)
+        (("SPC" . "Mark key items (C-c C-SPC)") . one-key-template-mark-key-items)
+        (("M-<up>" . "Move key item(s) up (M-<up>)") . one-key-template-move-line-region-up)
+        (("M-<down>" . "Move key item(s) down (M-<down>)") . one-key-template-move-line-region-down)
+        (("C-M-q" . "Indent sexp (C-M-q)") . indent-sexp)
         (("M-TAB" . "Completion At Point (M-TAB)") . completion-at-point)
-	(("C-t" . "Test menu (C-c C-t)") . one-key-template-test-menu)
+        (("C-t" . "Test menu (C-c C-t)") . one-key-template-test-menu)
         (("C-h" . "Describe command of current item (C-c C-h)") . one-key-template-describe-command)
         (("C-w" . "Write template to one-key menus folder (C-c C-w)") . one-key-template-write)
         (("e" . "emacs-lisp-mode") . emacs-lisp-mode)
-	))
+        ))
 
 (defun one-key-menu-one-key-template ()
   "The `one-key' menu for one-key-template"
@@ -591,12 +591,12 @@ where ?? is the name of the menu."
 
 (setq one-key-menu-one-key-template-sort-alist
       '(
-	(("c" . "Sort items by command alphabetically (C-c C-s c)") . one-key-template-sort-key-items-by-command-alphabetically)
-	(("d" . "Sort items by description alphabetically (C-c C-s d)") . one-key-template-sort-key-items-by-description-alphabetically)
-	(("k" . "Sort items by key alphabetically (C-c C-s k)") . one-key-template-sort-key-items-by-key-alphabetically)
+        (("c" . "Sort items by command alphabetically (C-c C-s c)") . one-key-template-sort-key-items-by-command-alphabetically)
+        (("d" . "Sort items by description alphabetically (C-c C-s d)") . one-key-template-sort-key-items-by-description-alphabetically)
+        (("k" . "Sort items by key alphabetically (C-c C-s k)") . one-key-template-sort-key-items-by-key-alphabetically)
         (("g" . "Group items by regexp matches (C-c C-s g)") . one-key-template-group-key-items-by-regexps)
         (("G" . "Group items by regexp matches, reverse order (C-c C-s G)") . (lambda nil (interactive) (setq current-prefix-arg 1) (call-interactively 'one-key-template-group-key-items-by-regexps)))
-	(("C-b" . "back to previous menu") . one-key-menu-one-key-template)))
+        (("C-b" . "back to previous menu") . one-key-menu-one-key-template)))
 
 (defun one-key-menu-one-key-template-sort ()
   "The `one-key' menu for one-key-template-sort"
@@ -613,7 +613,7 @@ where ?? is the name of the menu."
   (interactive `(,major-mode))
   (let ((menu (assoc mode one-key-mode-alist)))
     (if menu
-	(funcall (cdr menu))
+        (funcall (cdr menu))
       (one-key-menu-toplevel))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Interactive Functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -694,7 +694,7 @@ Will highlight this `MSG' with face `MSG-FACE'."
 
 (defun one-key-highlight-help (title keystroke)
   "Highlight TITLE help information with KEYSTROKE."
-  (setq title (one-key-highlight (format "<%s> '%s' to hide, '%s/%s' and '%s/%s' to scroll. \
+  (setq title (one-key-highlight (format "%s -- '%s' to hide, '%s/%s' and '%s/%s' to scroll. \
 '%s' for keystroke help. '%s' to edit this menu.\n"
                                          title one-key-key-hide one-key-key-up
                                          one-key-key-down one-key-key-pgup one-key-key-pgdown
